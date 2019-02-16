@@ -1,0 +1,12 @@
+{
+    "name": "e-plus filter",
+    "version": "1.0.0",
+    "manifest_version": 2,
+    "description": "e-plus filter",
+    "content_scripts": [{
+      "matches": ["https://north2.eplus.jp/sys/main.jsp*"],
+      "js": [
+        "content.js"
+      ]
+    }]
+}
