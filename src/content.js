@@ -42,7 +42,7 @@ filterElm.addEventListener("change", function(e) {
             showByStatusLabel(tr, "申込みを受付けました。");
         }
         if (filterElm.value == "prepared") {
-            showByStatusLabel(tr, "チケットをご用意いたしました。", "発券の完了を確認中です。");
+            showByStatusLabel(tr, "チケットをご用意いたしました。", "発券が可能になりました。", "発券の完了を確認中です。");
         }
         if (filterElm.value == "win") {
             showByStatusLabel(tr, "チケットをご用意いたしました。", "発券");
