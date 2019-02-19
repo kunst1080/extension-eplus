@@ -9,31 +9,13 @@ function createOption(value, text) {
     return opt;
 }
 
-function allHook(tr) {
-    tr.style.display="";
-}
-
-function pendingHook(tr) {
+function showByStatusLabel(tr, phrase1, phrase2, phrase3) {
     var label = tr.getElementsByTagName("td")[2].innerText;
-    if (contains(label, "申込みを受付けました。")) {
+    if (!phrase1) {
         tr.style.display="";
-    } else {
-        tr.style.display="none";
+        return;
     }
-}
-
-function preparedHook(tr) {
-    var label = tr.getElementsByTagName("td")[2].innerText;
-    if (contains(label, "チケットをご用意いたしました。", "発券の完了を確認中です。")) {
-        tr.style.display="";
-    } else {
-        tr.style.display="none";
-    }
-}
-
-function winHook(tr) {
-    var label = tr.getElementsByTagName("td")[2].innerText;
-    if (contains(label, "チケットをご用意いたしました。", "発券")) {
+    if (contains(label, phrase1, phrase2, phrase3)) {
         tr.style.display="";
     } else {
         tr.style.display="none";
@@ -54,16 +36,16 @@ filterElm.addEventListener("change", function(e) {
     var rows = document.querySelectorAll("tr.win-situation,tr.win-failure");
     rows.forEach(function(tr){
         if (filterElm.value == "all") {
-            allHook(tr);
+            showByStatusLabel(tr);
         }
         if (filterElm.value == "pending") {
-            pendingHook(tr);
+            showByStatusLabel(tr, "申込みを受付けました。");
         }
         if (filterElm.value == "prepared") {
-            preparedHook(tr);
+            showByStatusLabel(tr, "チケットをご用意いたしました。", "発券の完了を確認中です。");
         }
         if (filterElm.value == "win") {
-            winHook(tr);
+            showByStatusLabel(tr, "チケットをご用意いたしました。", "発券");
         }
     })
 });
