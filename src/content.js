@@ -39,7 +39,7 @@ filterElm.addEventListener("change", function(e) {
             showByStatusLabel(tr);
         }
         if (filterElm.value == "pending") {
-            showByStatusLabel(tr, "申込みを受付けました。");
+            showByStatusLabel(tr, "お申込みを受付ました。");
         }
         if (filterElm.value == "prepared") {
             showByStatusLabel(tr, "チケットをご用意いたしました。", "発券が可能になりました。", "発券の完了を確認中です。");
