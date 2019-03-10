@@ -1,5 +1,7 @@
-function contains(str, phrase1, phrase2, phrase3) {
-    return str.indexOf(phrase1) > -1 || str.indexOf(phrase2) > -1 || str.indexOf(phrase3) > -1;
+function contains(str, phrases) {
+    return phrases.some(function(phrase) {
+        return str.indexOf(phrase) > -1;
+    });
 }
 
 function createOption(value, text) {
@@ -9,13 +11,13 @@ function createOption(value, text) {
     return opt;
 }
 
-function showByStatusLabel(tr, phrase1, phrase2, phrase3) {
+function showByStatusLabel(tr, phrases) {
     var label = tr.getElementsByTagName("td")[2].innerText;
-    if (!phrase1) {
+    if (phrases == null) {
         tr.style.display="";
         return;
     }
-    if (contains(label, phrase1, phrase2, phrase3)) {
+    if (contains(label, phrases)) {
         tr.style.display="";
     } else {
         tr.style.display="none";
@@ -29,7 +31,9 @@ var filterElm = document.createElement("select");
 filterElm.appendChild(createOption("all", "全て"));
 filterElm.appendChild(createOption("pending", "申し込み中"));
 filterElm.appendChild(createOption("prepared", "未発券"));
-filterElm.appendChild(createOption("win", "ご用意できました"));
+filterElm.appendChild(createOption("ticketed", "発券済み"));
+filterElm.appendChild(createOption("not-ticketed", "発券済み以外"));
+filterElm.appendChild(createOption("win", "当選全て"));
 
 // フィルターイベント
 filterElm.addEventListener("change", function(e) {
@@ -39,13 +43,21 @@ filterElm.addEventListener("change", function(e) {
             showByStatusLabel(tr);
         }
         if (filterElm.value == "pending") {
-            showByStatusLabel(tr, "お申込みを受付ました。");
+            showByStatusLabel(tr, ["お申込みを受付ました。"]);
         }
         if (filterElm.value == "prepared") {
-            showByStatusLabel(tr, "チケットをご用意いたしました。", "発券が可能になりました。", "発券の完了を確認中です。");
+            showByStatusLabel(tr, ["チケットをご用意いたしました。", "発券が可能になりました。", "発券の完了を確認中です。"]);
         }
+        if (filterElm.value == "ticketed") {
+            showByStatusLabel(tr, ["チケットが発券されました。"]);
+        }
+        // pending + prepared
+        if (filterElm.value == "not-ticketed") {
+            showByStatusLabel(tr, ["お申込みを受付ました。", "チケットをご用意いたしました。", "発券が可能になりました。", "発券の完了を確認中です。"]);
+        }
+        // prepared + ticketed
         if (filterElm.value == "win") {
-            showByStatusLabel(tr, "チケットをご用意いたしました。", "発券");
+            showByStatusLabel(tr, ["チケットをご用意いたしました。", "発券"]);
         }
     })
 });
